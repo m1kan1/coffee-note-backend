@@ -1,0 +1,5 @@
+requests
+pyjwt
+cryptography
+boto3
+cachetools

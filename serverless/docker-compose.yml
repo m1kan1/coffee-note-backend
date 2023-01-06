@@ -1,0 +1,45 @@
+version: "3.4"
+
+services:
+  apigateway:
+    image: ghcr.io/phishing-hunter/apigateway-proxy:main
+    ports:
+      - "9000:8080"
+    volumes:
+      - ./tables.yaml:/config/tables.yaml:ro
+    depends_on:
+      - lambda
+    restart: always
+
+  lambda:
+    ports:
+      - "8080:8080"
+    build: ./handler/coffee_note
+    depends_on:
+      - dynamodb
+    restart: always
+    environment:
+      - AWS_ACCESS_KEY_ID=xxxxxxxxxx
+      - AWS_SECRET_ACCESS_KEY=xxxxxxxxxxxxxxxx
+      - AWS_DEFAULT_REGION=us-west-2
+      - DYNAMODB_ENDPOINT_URL=http://dynamodb:8000
+      - DEBUG=1
+
+  dynamodb:
+    image: amazon/dynamodb-local:latest
+    user: root
+    command: -jar DynamoDBLocal.jar -sharedDb -dbPath /data
+    volumes:
+      - dynamodb-data:/data
+
+  dynamodb-admin:
+    image: aaronshaf/dynamodb-admin:latest
+    environment:
+      - DYNAMO_ENDPOINT=dynamodb:8000
+    ports:
+      - 8001:8001
+    depends_on:
+      - dynamodb
+
+volumes:
+  dynamodb-data:
