@@ -20,12 +20,23 @@ LPI_COMMON_HEADER = {
     "Access-Control-Allow-Methods": "OPTIONS,POST,GET,DELETE",
 }
 
+import sentry_sdk
+from sentry_sdk import set_user
+from sentry_sdk.integrations.aws_lambda import AwsLambdaIntegration
+
+SENTRY_DSN = os.environ.get("SENTRY_DSN", "")
+sentry_sdk.init(
+    dsn=SENTRY_DSN,
+    integrations=[AwsLambdaIntegration(timeout_warning=True)],
+    traces_sample_rate=1.0,
+)
 
 def coffee_note_handler(event, context):
     # TODO implement
     try:
         print(event)
         user_id = event["requestContext"]["authorizer"]["principalId"]
+        set_user({"id": user_id})
         if event["body"] :
             body = json.loads(event["body"])
         if event['httpMethod']=='GET' :

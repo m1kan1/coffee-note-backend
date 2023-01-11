@@ -43,6 +43,8 @@ provider:
   environment:
     AUTH0_AUDIENCE: ${env:AUTH0_AUDIENCE}
     AUTH0_JWKS_URL: ${env:AUTH0_JWKS_URL}
+    SENTRY_DSN: ${env:SENTRY_DSN}
+
   ecr:
     images:
       auth:
