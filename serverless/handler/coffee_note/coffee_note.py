@@ -24,7 +24,7 @@ import sentry_sdk
 from sentry_sdk import set_user
 from sentry_sdk.integrations.aws_lambda import AwsLambdaIntegration
 
-SENTRY_DSN = os.environ.get("SENTRY_DSN", "")
+SENTRY_DSN = os.getenv("SENTRY_DSN")
 sentry_sdk.init(
     dsn=SENTRY_DSN,
     integrations=[AwsLambdaIntegration(timeout_warning=True)],
