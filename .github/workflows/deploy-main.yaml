@@ -20,6 +20,7 @@ jobs:
           aws-region: ap-northeast-1
       - name: Deploy
         env:
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           AUTH0_AUDIENCE: ${{ secrets.AUTH_AUDIENCE }}
           AUTH0_JWKS_URL: https://dev-f-g2ys78.us.auth0.com/.well-known/jwks.json
         run: cd serverless && sls deploy
@@ -39,7 +40,6 @@ jobs:
           AUTH0_CLIENT_SECRET: ${{ secrets.AUTH_CLIENT_SECRET }}
           AUTH0_TOKEN_REQUEST_URL: ${{ secrets.AUTH_TOKEN_REQUEST_URL }}
           ENDPOINT_URL: https://33ed3x1zug.execute-api.ap-northeast-1.amazonaws.com/dev/coffee_note
-          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
         run: |
           pytest tests/test_coffee_note.py -v
 
