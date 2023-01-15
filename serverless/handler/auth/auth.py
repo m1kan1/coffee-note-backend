@@ -1,6 +1,6 @@
 import json
 import os
-
+import time
 import jwt
 import requests
 from cryptography.hazmat.primitives import serialization
@@ -29,6 +29,8 @@ def auth_handler(event, context):
 
 def jwt_verify(auth_token, pub_key):
     payload = jwt.decode(auth_token, pub_key, algorithms=['RS256'], audience=AUTH0_AUDIENCE)
+    if time.time() > payload["exp"]:
+        raise Exception("Token is expired")
     return payload['sub']
 
 
