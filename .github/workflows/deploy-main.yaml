@@ -20,6 +20,7 @@ jobs:
           aws-region: ap-northeast-1
       - name: Deploy
         env:
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           AUTH0_AUDIENCE: ${{ secrets.AUTH_AUDIENCE }}
           AUTH0_JWKS_URL: https://dev-f-g2ys78.us.auth0.com/.well-known/jwks.json
         run: cd serverless && sls deploy
